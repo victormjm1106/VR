@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SISTEMA SOLAR</title>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+</head>
+
+<body>
+    <a-scene physics="gravity: 0 0 0; debug: false" shadows>
+
+        <a-assets>
+            <a-asset-item id="sun" src="cc/sun/scene.gltf"></a-asset-item>
+            <a-asset-item id="mercury" src="cc/mercury.glb"></a-asset-item>
+            <a-asset-item id="venus" src="cc/venus.glb"></a-asset-item>
+            <a-asset-item id="earth" src="cc/earth.glb"></a-asset-item>
+            <a-asset-item id="mars" src="cc/mars.glb"></a-asset-item>
+            <a-asset-item id="jupiter" src="cc/jupiter.glb"></a-asset-item>
+            <a-asset-item id="saturn" src="cc/saturn.glb"></a-asset-item>
+            <a-asset-item id="uranus" src="cc/uranus.glb"></a-asset-item>
+            <a-asset-item id="neptune" src="cc/neptune.glb"></a-asset-item>
+            <a-asset-item id="among-us" src="among_us/scene.gltf"></a-asset-item>
+            <a-asset-item id="marsprueba" src="mars/scene.glb"></a-asset-item>
+            <a-asset-item id="nave_among_us" src="nave_among_us/scene.gltf"></a-asset-item>
+            <a-asset-item id="galaxy" src="cc/GALAXY/scene.gltf"></a-asset-item>
+            <a-asset-item id="boton" src="cc/boton.glb"></a-asset-item>
+        </a-assets>
+
+        <a-entity id="rig" 
+                  movement-controls="fly: false; speed: 1" 
+                  kinematic-body="radius: 2" 
+                  position="114 4 105">
+            
+            <a-entity camera 
+                      position="0 1.6 0" 
+                      look-controls>
+                <a-cursor fuse="false" raycaster="objects: .planet, .clicable"></a-cursor>
+                <a-text id="planet-name" value="" align="center" position="0 -0.5 -1" visible="false"></a-text>
+            </a-entity>
+        </a-entity>
+
+        <a-sky color="#000"></a-sky>
+
+        <a-entity light="type: ambient; intensity: 0.3"></a-entity>
+        <a-entity light="type: directional; intensity: 2.5; castShadow: true" position="0 10 5"></a-entity>
+        <a-entity light="type: ambient; intensity: 0.5; color: #ffffff"></a-entity>
+        <a-entity light="type: directional; intensity: 2; castShadow: true" position="0 10 10"></a-entity>
+        <a-entity light="type: point; intensity: 1.5; distance: 50; decay: 2" position="0 5 0"></a-entity>
+
+        <a-entity id="solarSystem">
+            <a-entity gltf-model="#sun" position="0 0 0" scale="0.05 0.05 0.05"
+                animation="property: rotation; to: 0 360 0; dur: 60000; loop: true; easing: linear"
+                shadow="cast: true; receive: false" 
+                static-body="shape: sphere">
+            </a-entity>
+
+            <a-entity class="planet" gltf-model="#mercury" position="60 0 0" scale="0.1 0.1 0.1"
+                animation="property: rotation; to: 0 360 0; dur: 8000; loop: true; easing: linear" 
+                static-body="shape: sphere">
+            </a-entity>
+
+            <a-entity class="planet" gltf-model="#venus" position="67 0 0" scale="0.8 0.8 0.8"
+                animation="property: rotation; to: 0 360 0; dur: 10000; loop: true; easing: linear" 
+                static-body="shape: sphere">
+            </a-entity>
+
+            <a-entity class="planet" gltf-model="#earth" position="79 0 0" scale="0.9 0.9 0.9"
+                animation="property: rotation; to: 0 360 0; dur: 10000; loop: true; easing: linear" 
+                static-body="shape: sphere">
+            </a-entity>
+
+            <a-entity id="marte" class="planet clicable" gltf-model="#mars" position="91 0 0"
+                scale="0.1 0.1 0.1"
+                animation="property: rotation; to: 0 360 0; dur: 11000; loop: true; easing: linear" 
+                static-body="shape: sphere">
+            </a-entity>
+            
+
+            <a-entity class="planet" gltf-model="#jupiter" position="114 0 0" scale="0.7 0.7 0.7"
+                animation="property: rotation; to: 0 360 0; dur: 15000; loop: true; easing: linear" 
+                static-body="shape: sphere">
+            </a-entity>
+
+            <a-entity class="planet" gltf-model="#saturn" position="148 0 0" scale="700 700 700"
+                animation="property: rotation; to: 0 360 0; dur: 16000; loop: true; easing: linear" 
+                static-body="shape: sphere">
+            </a-entity>
+
+            <a-entity class="planet" gltf-model="#uranus" position="187 0 0" scale="0.009 0.009 0.009"
+                animation="property: rotation; to: 0 360 0; dur: 18000; loop: true; easing: linear" 
+                static-body="shape: sphere">
+            </a-entity>
+
+            <a-entity class="planet" gltf-model="#neptune" position="220 0 0" scale="0.6 0.6 0.6"
+                animation="property: rotation; to: 0 360 0; dur: 20000; loop: true; easing: linear" 
+                static-body="shape: sphere">
+            </a-entity>
+        </a-entity>
+        <a-entity id="boton" position="120 4 105" rotation="0 270 0" scale="0.5 0.5 0.5">
+          <a-entity gltf-model="#boton" class="clicable"></a-entity>
+            <a-text
+                value="MINIJUEGO
+                ||
+                \/"
+                position="0 5 0.6"
+                align="center"
+                color="#00ffff"
+                width="30"
+            </a-text>
+        </a-entity>
+
+        <script>
+            AFRAME.registerComponent('show-name', {
+                schema: { name: { type: 'string', default: 'Planeta' } },
+                init: function () {
+                    const el = this.el;
+                    const hud = document.getElementById('planet-name');
+                    el.addEventListener('mouseenter', () => {
+                        if (hud) {
+                            hud.setAttribute('value', this.data.name);
+                            hud.setAttribute('visible', true);
+                        }
+                    });
+                    el.addEventListener('mouseleave', () => {
+                        if (hud) hud.setAttribute('visible', false);
+                    });
+                }
+            });
+
+
+            document.querySelectorAll('.planet').forEach(p => {
+                const modelSrc = p.getAttribute('gltf-model');
+                let planetName = "Planeta";
+                if (modelSrc.includes("mercury")) planetName = "Mercurio";
+                if (modelSrc.includes("venus")) planetName = "Venus";
+                if (modelSrc.includes("earth")) planetName = "Tierra";
+                if (modelSrc.includes("mars")) planetName = "Marte";
+                if (modelSrc.includes("jupiter")) planetName = "Jupiter";
+                if (modelSrc.includes("saturn")) planetName = "Saturno";
+                if (modelSrc.includes("uranus")) planetName = "Urano";
+                if (modelSrc.includes("neptune")) planetName = "Neptuno";
+                p.setAttribute('show-name', { name: planetName });
+            });
+
+
+            AFRAME.registerComponent('hover-effect', {
+                schema: { scaleFactor: { type: 'number', default: 1.2 } },
+                init: function () {
+                    const el = this.el;
+                    const scale = el.getAttribute('scale');
+                    const originalScale = { x: scale.x, y: scale.y, z: scale.z };
+                    el.addEventListener('mouseenter', () => {
+                        el.setAttribute('animation__scale', { property: 'scale', to: { x: originalScale.x * this.data.scaleFactor, y: originalScale.y * this.data.scaleFactor, z: originalScale.z * this.data.scaleFactor }, dur: 300, easing: 'easeOutQuad' });
+                    });
+                    el.addEventListener('mouseleave', () => {
+                        el.setAttribute('animation__scale', { property: 'scale', to: originalScale, dur: 300, easing: 'easeOutQuad' });
+                    });
+                }
+            });
+            document.querySelectorAll('.planet').forEach(p => p.setAttribute('hover-effect', ''));
+
+            document.querySelector('#marte').addEventListener('click', () => {
+                window.location.href = 'marte.html';
+            });
+            document.querySelector('#boton .clicable').addEventListener('click', () => {
+              window.location.href = 'juego.html';
+            });
+
+        </script>
+
+        <a-entity position="200 180 -120" scale="2 2 2" gltf-model="#among-us"
+            animation__rotate="property: rotation; to: 360 720 360; dur: 10000; loop: true; easing: linear"
+            animation__move="property: position; to: 500 -900 600; dur: 250000; direction: alternate; loop: true; easing: linear">
+        </a-entity>
+
+        <a-entity static-body position="200 200 -100" scale="5 5 5" rotation="0 -90 0" gltf-model="#nave_among_us"></a-entity>
+        <a-entity static-body position="0 0 0" scale="450 450 450" gltf-model="#galaxy"></a-entity>
+        <a-text value="HAZ CLICK PARA
+            IR A MARTE
+            ||
+            \/"
+                align="center"
+                anchor="center"
+                color="#FFD700"
+                position="91 6 0"
+                width="55">
+        </a-text>
+    </a-scene>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>MARTE</title>
+  <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras/dist/aframe-extras.min.js"></script>
+</head>
+
+<body>
+<a-scene physics="gravity: 0 0 0" background="color: #000">
+
+
+  <a-assets>
+    <a-asset-item id="mars" src="cc/marsgordo.glb"></a-asset-item>
+  </a-assets>
+
+
+  <a-light type="ambient" intensity="0.6"></a-light>
+  <a-light type="directional" intensity="1.5" position="5 10 5"></a-light>
+
+
+  <a-entity
+    id="marsBig"
+    gltf-model="#mars"
+    position="0 0 -10"
+    scale="0.4 0.4 0.4"
+    class="grabbable"
+    grabbable
+    stretchable
+    draggable
+    drag-rotate-desktop>
+  </a-entity>
+
+
+  <a-plane
+    id="backButton"
+    position="0 -5 -8"
+    width="2"
+    height="0.6"
+    color="#333"
+    class="clickable">
+    <a-text value="VOLVER" align="center" position="0 0 0.01"></a-text>
+  </a-plane>
+
+
+  <a-entity id="rig" position="0 1 6">
+    <a-camera wasd-controls look-controls>
+      <a-cursor
+        fuse="true"
+        fuse-timeout="500"
+        raycaster="objects: .clickable, .grabbable">
+      </a-cursor>
+    </a-camera>
+  </a-entity>
+
+</a-scene>
+
+<script>
+
+  document.querySelector('#backButton').addEventListener('click', () => {
+    window.location.href = 'index.html';
+  });
+  AFRAME.registerComponent('drag-rotate-desktop', {
+    init: function () {
+      this.dragging = false;
+      const el = this.el;
+
+      el.addEventListener('mousedown', (evt) => {
+        if (evt.target !== el) return;
+        this.dragging = true;
+      });
+
+      window.addEventListener('mouseup', () => {
+        this.dragging = false;
+      });
+
+      window.addEventListener('mousemove', (evt) => {
+        if (!this.dragging) return;
+        el.object3D.rotation.y += evt.movementX * 0.005;
+        el.object3D.rotation.x += evt.movementY * 0.005;
+      });
+    }
+  });
+  x = r * Math.sin(phi) * Math.cos(theta)
+  y = r * Math.cos(phi)
+  z = r * Math.sin(phi) * Math.sin(theta)
+
+
+
+</script>
+
+</body>
+</html>

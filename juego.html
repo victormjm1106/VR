@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>MINIJUEGO</title>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+
+</head>
+
+<body>
+    <a-scene>
+
+  
+        <a-plane position="0 0 0" rotation="-90 0 0" width="10" height="10"
+            material="src: ./imagenes/suelo.jpg; repeat: 10 10" static-body></a-plane>
+
+   
+        <a-box position="0 1.5 -5" width="10" height="3" depth="1"
+            material="src: ./imagenes/pared.png; repeat: 10 3" static-body></a-box>
+        <a-box position="0 1.5 5" width="10" height="3" depth="1"
+            material="src: ./imagenes/pared.png; repeat: 10 3" static-body></a-box>
+        <a-box position="-5 1.5 0" rotation="0 90 0" width="10" height="3" depth="1"
+            material="src: ./imagenes/pared.png; repeat: 10 3" static-body></a-box>
+        <a-box position="5 1.5 0" rotation="0 -90 0" width="10" height="3" depth="1"
+            material="src: ./imagenes/pared.png; repeat: 10 3" static-body></a-box>
+
+    
+        <a-sky color="#000000"></a-sky>
+
+  
+        <a-image position="0 1.5 -4.49" src="./imagenes/minijuego.png" width="2" height="2"></a-image>
+
+   
+        <a-assets>
+            <a-asset-item id="mars" src="cc/mars.glb"></a-asset-item>
+            <a-asset-item id="earth" src="cc/earth.glb"></a-asset-item>
+            <a-asset-item id="venus" src="cc/venus.glb"></a-asset-item>
+            <a-asset-item id="jupiter" src="cc/jupiter.glb"></a-asset-item>
+            <a-asset-item id="boton2" src="cc/boton2.glb"></a-asset-item>
+        </a-assets>
+
+
+          <a-text id="info"
+                  value="¿Que planeta es?"
+                  align="center"
+                  position="0 3 3"
+              rotation="0 180 0"
+                  width="4">
+          </a-text>
+
+      
+          <a-entity id="planet"
+                    position="0 1.5 3"
+                    scale="1 1 1"
+                    animation="property: rotation; to: 0 360 0; dur: 12000; loop: true">
+          </a-entity>
+
+
+
+
+          <a-plane class="clicable option" position="-1.5 0.6 2" rotation="0 180 0" width="1.6" height="0.6" color="#333">
+            <a-text value="" align="center" position="0 0 0.01"></a-text>
+          </a-plane>
+
+          <a-plane class="clicable option" position="0 0.6 2" rotation="0 180 0" width="1.6" height="0.6" color="#333">
+            <a-text value="" align="center" position="0 0 0.01"></a-text>
+          </a-plane>
+
+          <a-plane class="clicable option" position="1.5 0.6 2" rotation="0 180 0" width="1.6" height="0.6" color="#333">
+            <a-text value="" align="center" position="0 0 0.01"></a-text>
+          </a-plane>
+
+        <a-entity id="rig" position="0 0 0">
+          <a-camera wasd-controls="fly: false" look-controls>
+            <a-cursor fuse="false" raycaster="objects: .clicable"></a-cursor>
+          </a-camera>
+        </a-entity>
+
+
+
+        <a-entity id="boton2" position="3 1 -4.49" scale="0.1 0.1 0.1" rotation="0 -90 0">
+            <a-entity gltf-model="#boton2" class="clicable"></a-entity>
+        </a-entity>
+
+
+        <a-text value="VOLVER AL INICIO" align="center" anchor="center" color="#FFD700"
+            position="2.5 1.8 -4.48" width="2.5"></a-text>
+        <a-plane width="1" height="0.2" color="#000" opacity="1" position="2.5 1.8 -4.49"></a-plane>
+
+
+
+        <script> document.querySelector('#boton2 .clicable').addEventListener('click', () => { window.location.href = 'index.html'; }); </script>
+
+        <script>
+        const planets = [
+          { model: "#mars",    name: "Marte",   scale: "0.1 0.1 0.1" },
+          { model: "#earth",   name: "Tierra",  scale: "0.9 0.9 0.9" },
+          { model: "#venus",   name: "Venus",   scale: "0.8 0.8 0.8" },
+          { model: "#jupiter", name: "Jupiter", scale: "0.1 0.1 0.1" }
+        ];
+
+        let index = 0;
+        let score = 0;
+
+        const planetEl = document.querySelector('#planet');
+        const info = document.querySelector('#info');
+        const options = document.querySelectorAll('.option');
+
+
+        const music = new Audio('cc/wii.mp3');
+        music.loop = true;
+
+        function loadPlanet() {
+          const current = planets[index];
+
+          planetEl.setAttribute('gltf-model', current.model);
+          planetEl.setAttribute('scale', current.scale);
+
+          info.setAttribute('value', `Aciertos: ${score} / 4`);
+
+
+          let names = planets.map(p => p.name);
+
+
+          names = names.filter(n => n !== current.name);
+
+
+          names = names.sort(() => Math.random() - 0.5).slice(0, 2);
+
+
+          names.push(current.name);
+
+
+          names = names.sort(() => Math.random() - 0.5);
+
+
+          options.forEach((btn, i) => {
+            btn.dataset.answer = names[i];
+            btn.querySelector('a-text').setAttribute('value', names[i]);
+          });
+        }
+
+        options.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const answer = btn.dataset.answer;
+            const correct = planets[index].name;
+
+            if (answer === correct) {
+              score++;
+              index++;
+
+              if (score === 4) {
+                win();
+              } else {
+                loadPlanet();
+              }
+            } else {
+              score = 0;
+              index = 0;
+              info.setAttribute('value', 'Fallaste. Empiezas de nuevo');
+              loadPlanet();
+            }
+          });
+        });
+
+        function win() {
+          info.setAttribute('value', '¡Felicidades! Ganaste 🎉');
+
+          music.play();
+        }
+
+
+        loadPlanet();
+        </script>
+    </a-scene>
+</body>
+
+</html>
